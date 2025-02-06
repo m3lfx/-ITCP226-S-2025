@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Item;
 
 class ItemController extends Controller
 {
@@ -27,7 +28,13 @@ class ItemController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // dd($request);
+        Item::create([
+            'description' => trim($request->description),
+            'cost_price' => trim($request->cost_price),
+            'sell_price' => trim($request->cost_price)
+        ]);
+        return 'item added';
     }
 
     /**
