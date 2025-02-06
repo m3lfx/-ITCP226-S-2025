@@ -10,4 +10,5 @@ class Order extends Model
     use HasFactory;
     protected $table = 'orderinfo';
     protected $primaryKey = 'orderinfo_id';
+    public $timestamps = false;
 }
