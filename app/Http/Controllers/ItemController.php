@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Item;
+use App\Models\Stock;
+use Validator;
+use Storage;
 
 class ItemController extends Controller
 {
@@ -29,12 +32,38 @@ class ItemController extends Controller
     public function store(Request $request)
     {
         // dd($request);
-        Item::create([
+
+        $rules = [
+            'description' => 'required|min:4',
+            'image' => 'mimes:jpg,png'
+        ];
+
+        $validator = Validator::make($request->all(), $rules);
+
+        if ($validator->fails()) {
+            return redirect()->back()
+                ->withErrors($validator)
+                ->withInput();
+        }
+
+        $path = Storage::putFileAs(
+            'public/images',
+            $request->file('image'),
+            $request->file('image')->hashName()
+        );
+
+        $item = Item::create([
             'description' => trim($request->description),
-            'cost_price' => trim($request->cost_price),
-            'sell_price' => trim($request->cost_price)
+            'cost_price' => $request->cost_price,
+            'sell_price' => $request->sell_price,
+            'image' => $path
         ]);
-        return 'item added';
+
+        $stock = new Stock();
+        $stock->item_id = $item->item_id;
+        $stock->quantity = $request->qty;
+        $stock->save();
+        return redirect()->back()->with('success', 'item added');
     }
 
     /**
