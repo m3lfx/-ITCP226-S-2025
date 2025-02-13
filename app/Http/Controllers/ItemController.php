@@ -7,6 +7,7 @@ use App\Models\Item;
 use App\Models\Stock;
 use Validator;
 use Storage;
+use DB;
 
 class ItemController extends Controller
 {
@@ -15,7 +16,8 @@ class ItemController extends Controller
      */
     public function index()
     {
-        //
+        $items = Item::all();
+        return view('item.index', compact('items'));
     }
 
     /**
@@ -79,7 +81,14 @@ class ItemController extends Controller
      */
     public function edit(string $id)
     {
-        $item = Item::find($id);
+        // $item = Item::find($id);
+        // $stock = Stock::find($id);
+        $item = DB::table('item')
+                ->join('stock', 'item.item_id', '=', 'stock.item_id')
+                ->where('item.item_id',$id)
+                ->first();
+        // dd($item);
+        // return view('item.edit', compact('item', 'stock'));
         return view('item.edit', compact('item'));
     }
 
