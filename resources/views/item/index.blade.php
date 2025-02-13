@@ -3,8 +3,8 @@
     <div id="items" class="container">
         @include('layouts.flash-messages')
         <a class="btn btn-primary" href="{{ route('items.create') }}" role="button">add</a>
-        {{-- action="{{ route('item-import') }}" --}}
-        <form method="POST" enctype="multipart/form-data" >
+        {{--  --}}
+        <form method="POST" enctype="multipart/form-data" action="{{ route('item.import') }}" >
             @csrf
             <input type="file" id="uploadName" name="item_upload" required>
             <button type="submit" class="btn btn-info btn-primary ">Import Excel File</button>
@@ -32,7 +32,7 @@
                         <tr>
                             <td>{{ $item->item_id }}</td>
                             @if ($item->image)
-                                <td><img src="{{ url($item->image) }}" alt="item image" width="50" height="50">
+                                <td><img src="{{ Storage::url($item->image) }}" alt="item image" width="50" height="50">
                                 </td>
                             @else
                                 <td><img src="#" alt="item image" width="50" height="50">
@@ -55,8 +55,8 @@
                             @else
                                 <td><i class="fas fa-edit" style="color:gray"></i>
                                     <i class="fas fa-trash" style="color:gray"></i>
-                                    <a href="{{ route('items.restore', $item->id) }}"><i class="fa-solid fa-rotate-left"
-                                            style="color:blue"></i></a>
+                                    {{-- <a href="{{ route('items.restore', $item->id) }}"><i class="fa-solid fa-rotate-left"
+                                            style="color:blue"></i></a> --}}
                                 </td>
                             @endif
                         </tr>

@@ -5,9 +5,12 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Item;
 use App\Models\Stock;
+use App\Imports\ItemsImport;
 use Validator;
 use Storage;
 use DB;
+use Excel;
+
 
 class ItemController extends Controller
 {
@@ -16,7 +19,8 @@ class ItemController extends Controller
      */
     public function index()
     {
-        $items = Item::all();
+        // $items = Item::all();
+         $items = DB::table('item')->join('stock', 'item.item_id', '=', 'stock.item_id')->get();
         return view('item.index', compact('items'));
     }
 
@@ -106,5 +110,22 @@ class ItemController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    public function import()
+    {
+       
+        Excel::import(
+            new ItemsImport,
+            request()
+                ->file('item_upload')
+                ->storeAs(
+                    'files',
+                    request()
+                        ->file('item_upload')
+                        ->getClientOriginalName()
+                )
+        );
+        return redirect()->back()->with('success', 'Excel file Imported Successfully');
     }
 }
