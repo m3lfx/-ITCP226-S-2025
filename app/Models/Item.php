@@ -10,7 +10,7 @@ class Item extends Model
     use HasFactory;
     protected $table = 'item';
     protected $primaryKey = 'item_id';
-    public $timestamps = false;
+    // public $timestamps = false;
     protected $fillable = ['description', 'cost_price', 'sell_price', 'image'];
    
 }
