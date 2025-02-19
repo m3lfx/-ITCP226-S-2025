@@ -150,11 +150,11 @@ class ItemController extends Controller
         $cart->add($item, $id);
 
         Session::put('cart', $cart);
-        dump(Session::get('cart'));
+        // dump(Session::get('cart'));
         // $request->session()->save();
         // Session::save();
         // dd(Session::get('cart'));
 
-        // return redirect('/');
+        return redirect('/')->with('success', 'item added to cart');
     }
 }

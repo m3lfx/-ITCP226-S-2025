@@ -17,6 +17,7 @@
 </head>
 
 <body>
+    @include('layouts.header')
     @yield('body')
 
 </body>
