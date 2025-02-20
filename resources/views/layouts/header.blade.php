@@ -15,7 +15,7 @@
 
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-user-circle"></i>
+                    data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fas fa-user-circle"></i>
                     {{Auth::check() ? Auth::user()->name : ''}}
                 </a>
 
@@ -32,13 +32,13 @@
                         {{-- <a class="dropdown-item" href="{{ route('user.profile') }}">User Profile</a> --}}
                         <a class="dropdown-item" href="#">User Profile</a>
                         <div class="dropdown-divider"></div>
-                        {{-- <a class="dropdown-item" href="{{ route('logout') }}">Logout </a> --}}
-                        {{-- <a class="dropdown-item" href="#">Logout </a> --}}
+                        <a class="dropdown-item" href="{{ route('user.logout') }}">Logout </a>
+                        {{-- <a class="dropdown-item" href="{{}}">Logout </a> --}}
                     @else
-                        {{-- <a class="dropdown-item" href="{{ route('user.register') }}">Signup </a>
-                        <a class="dropdown-item" href="{{ route('user.login') }}">Login </a> --}}
-                        <a class="dropdown-item" href="#">Signup </a>
-                        <a class="dropdown-item" href="#}">Signin </a>
+                         <a class="dropdown-item" href="{{ route('register') }}">Signup </a>
+                        <a class="dropdown-item" href="{{ route('login') }}">Login </a>
+                        {{-- <a class="dropdown-item" href="#">Signup </a>
+                        <a class="dropdown-item" href="#}">Signin </a> --}}
                     @endif
                 </div>
     </div>

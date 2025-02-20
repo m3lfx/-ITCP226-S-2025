@@ -208,10 +208,7 @@ class ItemController extends Controller
         try {
             DB::beginTransaction();
             $order = new Order();
-
             // $customer =  Customer::where('user_id', Auth::id())->first();
-          
-	        
             // $order->customer_id = $customer->customer_id;
             $order->customer_id = 1;
             $order->date_placed = now();
@@ -220,7 +217,7 @@ class ItemController extends Controller
             $order->shipping = 10.00  ;
             $order->status = 'pending';
             $order->save();
-            // dd($cart->items);
+            
     	    foreach($cart->items as $items){
         		$id = $items['item']['item_id'];
                
@@ -240,7 +237,7 @@ class ItemController extends Controller
         catch (\Exception $e) {
             // dd($e->getMessage());
 	        DB::rollback();
-            // dd($order);
+        
             return redirect()->route('getCart')->with('error', $e->getMessage());
         }
     

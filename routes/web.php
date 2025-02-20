@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ItemController;
+use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -27,3 +28,8 @@ Route::get('/checkout', [ItemController::class, 'postCheckout'])->name('checkout
 
 Route::post('/items-import', [ItemController::class, 'import'])->name('item.import');
 Route::resource('items', ItemController::class);
+Route::get('/logout', [UserController::class, 'logout'])->name('user.logout');
+
+Auth::routes();
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
