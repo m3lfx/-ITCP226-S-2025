@@ -42,8 +42,8 @@
         <hr>
         <div class="row">
             <div class="col-sm-6 col-md-6 col-md-offset-3 col-sm-offset-3">
-                {{-- <a href="{{ route('checkout') }}" type="button" class="btn btn-success">Checkout</a> --}}
-                <a href="#" type="button" class="btn btn-success">Checkout</a>
+                <a href="{{ route('checkout') }}" type="button" class="btn btn-success">Checkout</a>
+                {{-- <a href="#" type="button" class="btn btn-success">Checkout</a> --}}
 
             </div>
         </div>
