@@ -32,6 +32,9 @@ Route::resource('items', ItemController::class);
 Route::get('/logout', [UserController::class, 'logout'])->name('user.logout');
 
 Route::get('/admin/users',[DashboardController::class,'getUsers'])->name('admin.users');
+Route::post('/user/update/{id}',[UserController::class,'update_role'])->name('users.update');
+
+
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

@@ -13,6 +13,7 @@ use Yajra\DataTables\Html\Editor\Fields;
 use Yajra\DataTables\Services\DataTable;
 use Auth;
 use DB;
+
 class UsersDataTable extends DataTable
 {
     /**
@@ -23,10 +24,12 @@ class UsersDataTable extends DataTable
     public function dataTable($query)
     {
         return datatables()->query($query)
-            ->addColumn('action',  function ($row) {
-                $actionBtn = '<a href="#!"  class="btn details btn-primary">Details</a>';
-                return $actionBtn;
-            })->rawColumns(['action'])
+            ->addColumn('role',  function ($row) {
+               
+                return view('users.role')->with('id', $row->id);
+            })
+           
+            ->rawColumns(['role'])
             ->setRowId('id');
     }
 
@@ -36,18 +39,18 @@ class UsersDataTable extends DataTable
     public function query()
     {
         $users = DB::table('users')
-        ->join('customer', 'users.id', '=', 'customer.user_id')
-        ->select(
-            'users.id',
-            'users.name',
-            'users.email',
-            'customer.addressline',
-            'customer.phone',
-            'users.created_at'
-        )
-        ->where('users.id', '<>', Auth::id());
-    //  dd($users);
-    return $users;
+            ->join('customer', 'users.id', '=', 'customer.user_id')
+            ->select(
+                'users.id AS id',
+                'users.name',
+                'users.email',
+                'customer.addressline',
+                'customer.phone',
+                'users.created_at'
+            )
+            ->where('users.id', '<>', Auth::id());
+        //  dd($users);
+        return $users;
     }
 
     /**
@@ -56,16 +59,16 @@ class UsersDataTable extends DataTable
     public function html(): HtmlBuilder
     {
         return $this->builder()
-                    ->setTableId('users-table')
-                    ->columns($this->getColumns())
-                    ->minifiedAjax()
-                    //->dom('Bfrtip')
-                    ->orderBy(1)
-                    ->selectStyleSingle()
-                    ->parameters([
-                        'dom'          => 'Bfrtip',
-                        'buttons'      => ['pdf', 'excel'],
-                    ]);
+            ->setTableId('users-table')
+            ->columns($this->getColumns())
+            ->minifiedAjax()
+            //->dom('Bfrtip')
+            ->orderBy(1)
+            ->selectStyleSingle()
+            ->parameters([
+                'dom'          => 'Bfrtip',
+                'buttons'      => ['pdf', 'excel'],
+            ]);
     }
 
     /**
@@ -74,18 +77,20 @@ class UsersDataTable extends DataTable
     public function getColumns(): array
     {
         return [
-            Column::computed('action')
-                  ->exportable(false)
-                  ->printable(false)
-                  ->width(60)
-                  ->addClass('text-center'),
-                  Column::make('id')->title('customer id'),
-                 
-                  Column::make('name'),
-                  Column::make('email'),
-                  Column::make('addressline')->title('address')->searchable(false),
-                  Column::make('phone')->searchable(false),
-                  Column::make('created_at'),
+
+            Column::make('id')->title('customer id'),
+
+            Column::make('name'),
+            Column::make('email'),
+            Column::make('addressline')->title('address')->searchable(false),
+            Column::make('phone')->searchable(false),
+            Column::make('created_at'),
+            Column::computed('role')
+                ->exportable(false)
+                ->printable(false)
+                ->width(200)
+                ->addClass('text-center'),
+            
         ];
     }
 
