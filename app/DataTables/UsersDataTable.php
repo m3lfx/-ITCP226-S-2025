@@ -66,7 +66,7 @@ class UsersDataTable extends DataTable
             ->selectStyleSingle()
             ->parameters([
                 'dom'          => 'Bfrtip',
-                'buttons'      => ['pdf', 'excel'],
+                'buttons'      => ['pdf', 'excel', 'csv', 'reload'],
             ]);
     }
 
