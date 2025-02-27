@@ -34,6 +34,8 @@ Route::get('/logout', [UserController::class, 'logout'])->name('user.logout');
 Route::get('/admin/users',[DashboardController::class,'getUsers'])->name('admin.users');
 Route::post('/user/update/{id}',[UserController::class,'update_role'])->name('users.update');
 
+Route::get('/admin/orders',[DashboardController::class,'getOrders'])->name('admin.orders');
+
 
 Auth::routes();
 
