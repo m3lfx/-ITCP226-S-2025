@@ -25,10 +25,9 @@ class UsersDataTable extends DataTable
     {
         return datatables()->query($query)
             ->addColumn('role',  function ($row) {
+                return view('users.role', compact('row'));
                
-                return view('users.role')->with('id', $row->id);
             })
-           
             ->rawColumns(['role'])
             ->setRowId('id');
     }

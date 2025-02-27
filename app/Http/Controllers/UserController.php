@@ -13,7 +13,7 @@ class UserController extends Controller
         // dd($request->role, $id);
         User::where('id', $id)
             ->update(['role' => $request->role]);
-            return redirect()->back();
+        return redirect()->back();
     }
 
 

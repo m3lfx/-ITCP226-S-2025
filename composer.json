@@ -6,6 +6,7 @@
     "license": "MIT",
     "require": {
         "php": "^8.1",
+        "dompdf/dompdf": "^3.1",
         "guzzlehttp/guzzle": "^7.2",
         "laravel/framework": "^10.10",
         "laravel/sanctum": "^3.3",
@@ -14,7 +15,7 @@
         "laravelcollective/html": "^6.4",
         "maatwebsite/excel": "^3.1",
         "yajra/laravel-datatables": "^10.0",
-        "yajra/laravel-datatables-buttons": "^10.0"
+        "yajra/laravel-datatables-buttons": "10.0"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",
