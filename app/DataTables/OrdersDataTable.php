@@ -25,8 +25,8 @@ class OrdersDataTable extends DataTable
     {
         return datatables()->query($query)
         ->addColumn('action',  function ($row) {
-            $actionBtn = '<a href="#"  class="btn details btn-primary">Details</a>';
-            // $actionBtn = '<a href="' . route('admin.orderDetails', $row->orderinfo_id) . '"  class="btn details btn-primary">Details</a>';
+            // $actionBtn = '<a href="#"  class="btn details btn-primary">Details</a>';
+            $actionBtn = '<a href="' . route('admin.orderDetails', $row->orderinfo_id) . '"  class="btn details btn-primary">Details</a>';
             return $actionBtn;
         })->rawColumns(['action'])
         ->setRowId('id');
