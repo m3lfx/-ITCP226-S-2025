@@ -10,6 +10,12 @@
                {!! $customerChart->container() !!}
                {!! $customerChart->script() !!}
             </div>
+            <div class="container">
+                <hr>
+                <h2>sales chart</h2>
+               {!! $salesChart->container() !!}
+               {!! $salesChart->script() !!}
+            </div>
         </div>
         
     @endsection

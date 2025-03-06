@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\DataTables\UsersDataTable;
 use App\DataTables\OrdersDataTable;
 use App\Charts\CustomerChart;
+use App\Charts\MonthlySales;
+use App\Charts\MonthlySalesChart;
 use DB;
 
 class DashboardController extends Controller
@@ -71,7 +73,50 @@ class DashboardController extends Controller
             ],
         ]);
 
-          return view('dashboard.index', compact('customerChart'));
+        //SELECT monthname(date_placed), sum(i.sell_price * ol.quantity) FROM `orderinfo` o inner join orderline ol on o.orderinfo_id = ol.orderinfo_id inner join item i on i.item_id = ol.item_id group by month(date_placed);
+
+        $sales = DB::table('orderinfo AS o')
+            ->join('orderline AS ol', 'o.orderinfo_id', '=', 'ol.orderinfo_id')
+            ->join('item AS i', 'ol.item_id', '=', 'i.item_id')
+            ->orderBy(DB::raw('month(o.date_placed)'), 'ASC')
+            ->groupBy(DB::raw('month(o.date_placed)'))
+            ->pluck(
+                DB::raw('sum(ol.quantity * i.sell_price) AS total'),
+                DB::raw('monthname(o.date_placed) AS month')
+            )
+            ->all();
+        // dd($sales);
+
+        $salesChart = new MonthlySales;
+        $dataset = $salesChart->labels(array_keys($sales));
+        $dataset = $salesChart->dataset(
+            'Monthly sales 2025',
+            'line',
+            array_values($sales)
+        );
+        $dataset = $dataset->backgroundColor($this->bgcolor);
+
+        $salesChart->options([
+            'responsive' => true,
+            'legend' => ['display' => true],
+            'tooltips' => ['enabled' => true],
+            'aspectRatio' => 1,
+            'scales' => [
+                'yAxes' => [
+                    [
+                        'display' => true,
+                    ],
+                ],
+                'xAxes' => [
+                    [
+                        'gridLines' => ['display' => false],
+                        'display' => true,
+                    ],
+                ],
+            ],
+        ]);
+
+          return view('dashboard.index', compact('customerChart', 'salesChart'));
     }
 
     public function getUsers(UsersDataTable $dataTable) {
