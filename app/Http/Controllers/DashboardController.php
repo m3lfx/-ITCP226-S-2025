@@ -7,7 +7,8 @@ use App\DataTables\UsersDataTable;
 use App\DataTables\OrdersDataTable;
 use App\Charts\CustomerChart;
 use App\Charts\MonthlySales;
-use App\Charts\MonthlySalesChart;
+
+use App\Charts\ItemChart;
 use DB;
 
 class DashboardController extends Controller
@@ -34,13 +35,14 @@ class DashboardController extends Controller
             "#AAAAAA",
         ]);
     }
-    public function index() {
+    public function index()
+    {
         // SELECT count(addressline), addressline from customer group by addressline;
         $customer = DB::table('customer')
-        ->whereNotNull('addressline')
-        ->groupBy('addressline')
-        ->orderBy('total')
-        ->pluck(DB::raw('count(addressline) as total'), 'addressline')->all();
+            ->whereNotNull('addressline')
+            ->groupBy('addressline')
+            ->orderBy('total')
+            ->pluck(DB::raw('count(addressline) as total'), 'addressline')->all();
 
         // dd($customer);
         // dd(array_values($customer));
@@ -116,14 +118,43 @@ class DashboardController extends Controller
             ],
         ]);
 
-          return view('dashboard.index', compact('customerChart', 'salesChart'));
+        $items = DB::table('orderline AS ol')
+        ->join('item AS i', 'ol.item_id', '=', 'i.item_id')
+        ->groupBy('i.description')
+        ->orderBy('total', 'DESC')
+        ->pluck(DB::raw('sum(ol.quantity) AS total'), 'description')
+        ->all();
+        // dd($items);
+
+        $itemChart = new ItemChart;
+        $dataset = $itemChart->labels(array_keys($items));
+        // dd($dataset);
+        $dataset = $itemChart->dataset(
+            'Item sold',
+            'doughnut',
+            array_values($items)
+        );
+       
+        $dataset = $dataset->backgroundColor($this->bgcolor);
+       
+        $dataset = $dataset->fill(false);
+        $itemChart->options([
+            'responsive' => true,
+            'legend' => ['display' => true],
+            'tooltips' => ['enabled' => true],
+            'aspectRatio' => 1,
+    ]);
+
+        return view('dashboard.index', compact('customerChart', 'salesChart', 'itemChart'));
     }
 
-    public function getUsers(UsersDataTable $dataTable) {
+    public function getUsers(UsersDataTable $dataTable)
+    {
         return $dataTable->render('dashboard.users');
     }
 
-    public function getOrders(OrdersDataTable $dataTable) {
+    public function getOrders(OrdersDataTable $dataTable)
+    {
         return $dataTable->render('dashboard.orders');
     }
 }
