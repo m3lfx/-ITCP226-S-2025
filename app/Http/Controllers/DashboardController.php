@@ -10,7 +10,28 @@ use DB;
 
 class DashboardController extends Controller
 {
+    protected $bgcolor;
+    public function __construct()
+    {
 
+        $this->bgcolor = collect([
+            '#7158e2',
+            '#3ae374',
+            '#ff3838',
+            "#FF851B",
+            "#7FDBFF",
+            "#B10DC9",
+            "#FFDC00",
+            "#001f3f",
+            "#39CCCC",
+            "#01FF70",
+            "#85144b",
+            "#F012BE",
+            "#3D9970",
+            "#111111",
+            "#AAAAAA",
+        ]);
+    }
     public function index() {
         // SELECT count(addressline), addressline from customer group by addressline;
         $customer = DB::table('customer')
@@ -28,11 +49,7 @@ class DashboardController extends Controller
             'bar',
             array_values($customer)
         );
-        $dataset = $dataset->backgroundColor([
-            '#7158e2',
-            '#3ae374',
-            '#ff3838',
-        ]);
+        $dataset = $dataset->backgroundColor($this->bgcolor);
 
         $customerChart->options([
             'responsive' => true,
