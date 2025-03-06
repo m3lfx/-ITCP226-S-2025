@@ -41,6 +41,9 @@ Route::prefix('admin')->group(function () {
     Route::post('/order/{id}', [OrderController::class, 'orderUpdate'])->name('admin.orderUpdate');
 });
 
+Route::get('/dashboard',[DashboardController::class, 'index'])->name('dashboard.index');
+
+
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

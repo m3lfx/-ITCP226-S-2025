@@ -15,7 +15,7 @@ class UserSeeder extends Seeder
      */
     public function run(Faker $faker): void
     {
-        for ($i = 0; $i < 10; $i++) {
+        for ($i = 0; $i < 100; $i++) {
             $fname = $faker->firstName();
             $lname = $faker->lastName();
             $user = new User();
@@ -29,7 +29,7 @@ class UserSeeder extends Seeder
             $customer->title = $faker->randomElement($array = array('ms.', 'mr.', 'miss', 'dr.'));
             $customer->fname = $fname;
             $customer->lname = $lname;
-            $customer->addressline = $faker->address();
+            $customer->addressline = $faker->randomElement($array = array('taguig', 'makati', 'las pinas', 'pasay','muntinlupa', 'pateros'));;
             $customer->town = $faker->city();
             $customer->zipcode = '0000';
             $customer->phone = '091800000';
