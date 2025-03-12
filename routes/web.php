@@ -5,6 +5,8 @@ use App\Http\Controllers\ItemController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\SearchController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -33,7 +35,6 @@ Route::get('/logout', [UserController::class, 'logout'])->name('user.logout');
 
 
 
-
 Route::prefix('admin')->group(function () {
     Route::get('/users', [DashboardController::class, 'getUsers'])->name('admin.users');
     Route::get('/orders', [DashboardController::class, 'getOrders'])->name('admin.orders');
@@ -42,7 +43,8 @@ Route::prefix('admin')->group(function () {
 });
 
 Route::get('/dashboard',[DashboardController::class, 'index'])->name('dashboard.index');
-
+Route::get('/search',[SearchController::class, 'search'])->name('search');
+Route::resource('customers', CustomerController::class);
 
 Auth::routes();
 

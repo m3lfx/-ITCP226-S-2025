@@ -95,11 +95,13 @@ class ItemController extends Controller
     {
         // $item = Item::find($id);
         // $stock = Stock::find($id);
-        $item = DB::table('item')
-                ->join('stock', 'item.item_id', '=', 'stock.item_id')
-                ->where('item.item_id',$id)
-                ->first();
+        // $item = DB::table('item')
+        //         ->join('stock', 'item.item_id', '=', 'stock.item_id')
+        //         ->where('item.item_id',$id)
+        //         ->first();
         // dd($item);
+        // $item = Item::find($id);
+        $item = Stock::findorfail($id);
         // return view('item.edit', compact('item', 'stock'));
         return view('item.edit', compact('item'));
     }

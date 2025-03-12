@@ -56,6 +56,7 @@ class DashboardController extends Controller
         $dataset = $dataset->backgroundColor($this->bgcolor);
 
         $customerChart->options([
+            'indexAxis' => 'y',
             'responsive' => true,
             'legend' => ['display' => true],
             'tooltips' => ['enabled' => true],
