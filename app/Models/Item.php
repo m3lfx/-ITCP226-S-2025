@@ -28,6 +28,6 @@ class Item extends Model implements Searchable
 
     public function orders()
     {
-        return $this->belongsToMany(Order::class, 'orderline', 'item_id', 'orderinfo_id');
+        return $this->belongsToMany(Order::class, 'orderline', 'item_id', 'orderinfo_id')->withPivot('quantity');
     }
 }

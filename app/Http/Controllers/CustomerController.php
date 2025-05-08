@@ -7,6 +7,7 @@ use App\Models\Customer;
 use App\Models\Item;
 use App\Models\User;
 use App\Models\Order;
+use Illuminate\Contracts\Database\Eloquent\Builder;
 
 class CustomerController extends Controller
 {
@@ -50,8 +51,13 @@ class CustomerController extends Controller
         //     }
         // }
 
-        // $orders = Order::with('items')->get();
-        // // dd($orders);
+        $orders = Order::with('items')->get();
+        // dd($orders);
+        foreach($orders as $order) {
+            foreach($order->items as $item) {
+                dump($item->pivot->quantity);
+            }
+        }
         // foreach ($orders as $order) {
         //     dump($order);
         //     // dump($order->orderinfo_id, $order->date_placed, $order->status);
@@ -70,15 +76,21 @@ class CustomerController extends Controller
         //     }
         // }  
 
-        $orders = Order::with(['customer', 'items'])->get();
+        // $order = Order::with('customer')->where('orderinfo_id', 1)->first();
         // dd($orders); 
-        foreach ($orders as $order) {
-            dump($order->customer->lname, $order->customer->fname, $order->customer->addressline, $order->customer->phone);
-            dump($order->orderinfo_id, $order->date_placed, $order->status);
-            foreach ($order->items as $item) {
-                dump($item->description);
-            }
-        }
+        // $orders = Order::withWhereHas('customer', function ($query) {
+        //     $query->where('town', '=', 'taguig');
+        // })->get();
+        // dd($orders); 
+        // foreach ($orders as $order) {
+        //     dump($order->customer->lname);
+        // }
+        //     dump($order->customer->lname, $order->customer->fname, $order->customer->addressline, $order->customer->phone);
+            // dump($order->orderinfo_id, $order->date_placed, $order->status);
+            // foreach ($order->items as $item) {
+            //     dump($item->description);
+            // }
+        // }
     }
 
     /**

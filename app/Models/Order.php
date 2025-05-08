@@ -19,6 +19,6 @@ class Order extends Model
 
     public function items()
     {
-        return $this->belongsToMany(Item::class, 'orderline', 'orderinfo_id', 'item_id');
+        return $this->belongsToMany(Item::class, 'orderline', 'orderinfo_id', 'item_id')->withPivot('quantity');
     }
 }
