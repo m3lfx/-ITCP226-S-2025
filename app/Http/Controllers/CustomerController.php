@@ -35,10 +35,49 @@ class CustomerController extends Controller
         // foreach($items as $item) {
         //     dump($item->description);
         // }
-        $orders = Item::find(1)->orders;
-        // dd($orders);
-         foreach($orders as $order) {
-            dump($order->orderinfo_id,  $order->date_placed);
+        // $orders = Item::find(1)->orders;
+        // // dd($orders);
+        // foreach ($orders as $order) {
+        //     dump($order->orderinfo_id,  $order->date_placed);
+        // }
+
+        // $customers = Customer::with('orders')->get();
+        // // dd($customers);
+        // foreach ($customers as $customer) {
+        //      dump($customer);
+        //     foreach($customer->orders as $order) {
+        //         dump($order->orderinfo_id, $order->date_placed, $order->status);
+        //     }
+        // }
+
+        // $orders = Order::with('items')->get();
+        // // dd($orders);
+        // foreach ($orders as $order) {
+        //     dump($order);
+        //     // dump($order->orderinfo_id, $order->date_placed, $order->status);
+        //     foreach ($order->items as $item) {
+        //         dump($item->description);
+        //     }
+        // }
+
+        // $items = Item::with('orders')->get();
+        // // dd($items);
+        // foreach ($items as $item) {
+        //     dump($item);
+        //     // dump($item->description);
+        //     foreach ($item->orders as $order) {
+        //         dump($order->orderinfo_id, $order->date_placed, $order->status);
+        //     }
+        // }  
+
+        $orders = Order::with(['customer', 'items'])->get();
+        // dd($orders); 
+        foreach ($orders as $order) {
+            dump($order->customer->lname, $order->customer->fname, $order->customer->addressline, $order->customer->phone);
+            dump($order->orderinfo_id, $order->date_placed, $order->status);
+            foreach ($order->items as $item) {
+                dump($item->description);
+            }
         }
     }
 
