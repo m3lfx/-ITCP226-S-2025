@@ -204,6 +204,7 @@ class ItemController extends Controller
     }
 
     public function postCheckout(){
+       
         if (!Session::has('cart')) {
             return redirect()->route('getCart');
         }
@@ -215,23 +216,29 @@ class ItemController extends Controller
             $order = new Order();
             $customer =  Customer::where('user_id', Auth::id())->first();
             // $order->customer_id = $customer->customer_id;
-            $order->customer_id = $customer->customer_id;
+            // $order->customer_id = $customer->customer_id;
             $order->date_placed = now();
             $order->date_shipped = Carbon::now()->addDays(5);
         
             $order->shipping = 10.00  ;
             $order->status = 'pending';
-            $order->save();
+            // $order->save();
+            $customer->orders()->save($order);
             
     	    foreach($cart->items as $items){
         		$id = $items['item']['item_id'];
-               
-                DB::table('orderline')->insert(
-                    ['item_id' => $id, 
-                     'orderinfo_id' => $order->orderinfo_id,
-                     'quantity' => $items['qty']
-                    ]
-                    );
+                $order
+                    ->items()
+                    ->attach($order->orderinfo_id, [
+                        'quantity' => $items['qty'],
+                        'item_id' => $id,
+                    ]);
+                // DB::table('orderline')->insert(
+                //     ['item_id' => $id, 
+                //      'orderinfo_id' => $order->orderinfo_id,
+                //      'quantity' => $items['qty']
+                //     ]
+                //     );
         		
                 $stock = Stock::find($id);
           		$stock->quantity = $stock->quantity - $items['qty'];
