@@ -25,4 +25,9 @@ class Item extends Model implements Searchable
            $url
         );
     }
+
+    public function orders()
+    {
+        return $this->belongsToMany(Order::class, 'orderline', 'item_id', 'orderinfo_id');
+    }
 }

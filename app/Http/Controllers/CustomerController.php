@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Customer;
+use App\Models\Item;
 use App\Models\User;
 use App\Models\Order;
 
@@ -29,10 +30,15 @@ class CustomerController extends Controller
         // foreach($orders as $order) {
         //     dump($order->orderinfo_id, $order->date_placed);
         // }
-        $items = Order::find(1)->items;
-        // dd($items);
-        foreach($items as $item) {
-            dump($item->description);
+        // $items = Order::find(1)->items;
+        // // dd($items);
+        // foreach($items as $item) {
+        //     dump($item->description);
+        // }
+        $orders = Item::find(1)->orders;
+        // dd($orders);
+         foreach($orders as $order) {
+            dump($order->orderinfo_id,  $order->date_placed);
         }
     }
 
