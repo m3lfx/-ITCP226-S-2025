@@ -27,8 +27,8 @@ class ItemController extends Controller
     public function index()
     {
         // $items = Item::all();
-       
-         $items = DB::table('item')->join('stock', 'item.item_id', '=', 'stock.item_id')->get();
+
+        $items = DB::table('item')->join('stock', 'item.item_id', '=', 'stock.item_id')->get();
         return view('item.index', compact('items'));
     }
 
@@ -124,7 +124,7 @@ class ItemController extends Controller
 
     public function import()
     {
-      
+
         Excel::import(
             new ItemStockImport,
             request()
@@ -141,9 +141,11 @@ class ItemController extends Controller
 
     public function getItems()
     {
-        $items = DB::table('item')->join('stock', 'item.item_id', '=', 'stock.item_id')->get();
-      
-       
+        // $items = DB::table('item')->join('stock', 'item.item_id', '=', 'stock.item_id')->get();
+        //   $items = Item::withWhereHas('stock')->get();
+        $items = Stock::with('item')->get();
+        // dd($items);
+
         return view('shop.index', compact('items'));
     }
 
@@ -203,8 +205,9 @@ class ItemController extends Controller
         return redirect()->route('getCart');
     }
 
-    public function postCheckout(){
-       
+    public function postCheckout()
+    {
+
         if (!Session::has('cart')) {
             return redirect()->route('getCart');
         }
@@ -219,14 +222,14 @@ class ItemController extends Controller
             // $order->customer_id = $customer->customer_id;
             $order->date_placed = now();
             $order->date_shipped = Carbon::now()->addDays(5);
-        
-            $order->shipping = 10.00  ;
+
+            $order->shipping = 10.00;
             $order->status = 'pending';
             // $order->save();
             $customer->orders()->save($order);
-            
-    	    foreach($cart->items as $items){
-        		$id = $items['item']['item_id'];
+
+            foreach ($cart->items as $items) {
+                $id = $items['item']['item_id'];
                 $order
                     ->items()
                     ->attach($order->orderinfo_id, [
@@ -239,22 +242,21 @@ class ItemController extends Controller
                 //      'quantity' => $items['qty']
                 //     ]
                 //     );
-        		
+
                 $stock = Stock::find($id);
-          		$stock->quantity = $stock->quantity - $items['qty'];
-         		$stock->save();
+                $stock->quantity = $stock->quantity - $items['qty'];
+                $stock->save();
             }
             // dd($order);
-        }
-        catch (\Exception $e) {
+        } catch (\Exception $e) {
             // dd($e->getMessage());
-	        DB::rollback();
-        
+            DB::rollback();
+
             return redirect()->route('getCart')->with('error', $e->getMessage());
         }
-    
+
         DB::commit();
         Session::forget('cart');
-        return redirect('/')->with('success','Successfully Purchased Your Products!!!');
+        return redirect('/')->with('success', 'Successfully Purchased Your Products!!!');
     }
 }

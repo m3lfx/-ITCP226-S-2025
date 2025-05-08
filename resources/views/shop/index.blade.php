@@ -11,9 +11,9 @@
             @foreach ($itemChunk as $item)
                 <div class="col-sm-6 col-md-4">
                     <div class="thumbnail">
-                        <img src="{{ Storage::url($item->image) }}" alt="..." class="img-responsive" width="250px" height="250px">
+                        <img src="{{ Storage::url($item->item->image) }}" alt="..." class="img-responsive" width="250px" height="250px">
                         <div class="caption">
-                            <h3>{{ $item->description }}<span>${{ $item->sell_price }}</span></h3>
+                            <h3>{{ $item->item->description }}<span>${{ $item->item->sell_price }}</span></h3>
 
                             <div class="clearfix">
                                 {{-- <a href="#" class="btn btn-primary" role="button"><i class="fas fa-cart-plus"></i>

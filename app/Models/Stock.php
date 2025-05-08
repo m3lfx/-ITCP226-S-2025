@@ -11,4 +11,9 @@ class Stock extends Model
     protected $table = 'stock';
     protected $primaryKey = 'item_id';
     public $timestamps = false;
+
+    public function item()
+    {
+        return $this->belongsTo(Item::class,'item_id');
+    }
 }
